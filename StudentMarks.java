@@ -22,6 +22,19 @@ public class StudentMarks
     Double threshold;
     private List<StudentDetails> studentDetailsArray = new ArrayList<>();
 
+    
+    public static void main(String[] args) {
+        StudentMarks studentMarks = new StudentMarks();
+        try
+        {
+            studentMarks.mainMenu();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+     
+    }
 
 
     /**
@@ -29,22 +42,26 @@ public class StudentMarks
      *
      * When it creates an object with this constructor, it executes methods call in this constructor
      */
-    public StudentMarks() {}
+    public StudentMarks() {
+    
+    }
 
     public void mainMenu() throws Exception {
         readFromTheFile();
-        Scanner option = new Scanner(System.in);
-        System.out.println("\n------------------------Select from the menu---------------------"+
-                "\n 1. Enter 1 to read unit name and the students' marks from the file."+
-                "\n 2. Enter 2 to calculate and display total marks of the students assignments"+
-                "\n 3. Enter 3 to display the list of students with the total marks less than a threshold which can be given by you."+
-                "\n 4. Enter 4 to display top 05 students with the lowest total marks"+
-                "\n 5. Enter 5 to display top 05 students with the highest total marks"+
-                "\n 6. Enter 0 to exit the menu\n");
-
         int optionId;
-        optionId = option.nextInt();
-        switch (optionId){
+        try {
+            Scanner option = new Scanner(System.in);
+            System.out.println("\n------------------------Select from the menu---------------------"+
+                    "\n 1. Enter 1 to read unit name and the students' marks from the file."+
+                    "\n 2. Enter 2 to calculate and display total marks of the students assignments"+
+                    "\n 3. Enter 3 to display the list of students with the total marks less than a threshold which can be given by you."+
+                    "\n 4. Enter 4 to display top 05 students with the lowest total marks"+
+                    "\n 5. Enter 5 to display top 05 students with the highest total marks"+
+                    "\n 6. Enter 0 to exit the menu\n");
+    
+            
+            optionId = option.nextInt();
+            switch (optionId){
             case 1:
                 while(readingFile) {
                     System.out.println("Reading the file........");
@@ -75,7 +92,11 @@ public class StudentMarks
 
             case 0:
                 break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        
 
 
     }
@@ -95,8 +116,6 @@ public class StudentMarks
                 }
                 lineArray = line.split(",");
                 if (lineNumber != 1 && lineNumber != 2) {
-                    //System.out.println(line);
-                    //System.out.println(lineNumber);
                     StudentDetails studentDetails = new StudentDetails(lineArray[2],lineArray[3],lineArray[4],lineArray[5],lineArray[0],lineArray[1], 0.0 );
                     studentDetailsArray.add(studentDetails);
                 } else if (lineNumber == 1) {
