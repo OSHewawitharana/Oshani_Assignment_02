@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
+
 /**
  * Simple program to compute statistics of 'students' marks in an assignment.
  *
@@ -14,32 +15,73 @@ public class StudentMarks
 {
     // instance variables
     File studentGradeCsv = new File("prog5001_students_grade_2022.csv");;
-
+    boolean readingFile = false;
     Scanner readScanner;
     String unitName;
     String[] lineArray;
     Double threshold;
     private List<StudentDetails> studentDetailsArray = new ArrayList<>();
-   
+
+
+
     /**
      * Constructor for objects of class StudentMarks
      *
      * When it creates an object with this constructor, it executes methods call in this constructor
      */
-    public StudentMarks()
-    {
+    public StudentMarks() {}
+
+    public void mainMenu() throws Exception {
         readFromTheFile();
-        getUnitName();
-        calculateTotalAssignmentMarks();
-        printTotalMarks();
-        getThresholdValue();
-        printsStudentsWithMarksLessThanThreshold();
-        sortStudentsTotalMarks();
-        printTop05StudentsWithLowestTotal();
-        printTop05StudentsWithHighestTotal();
+        Scanner option = new Scanner(System.in);
+        System.out.println("\n------------------------Select from the menu---------------------"+
+                "\n 1. Enter 1 to read unit name and the students' marks from the file."+
+                "\n 2. Enter 2 to calculate and display total marks of the students assignments"+
+                "\n 3. Enter 3 to display the list of students with the total marks less than a threshold which can be given by you."+
+                "\n 4. Enter 4 to display top 05 students with the lowest total marks"+
+                "\n 5. Enter 5 to display top 05 students with the highest total marks"+
+                "\n 6. Enter 0 to exit the menu\n");
+
+        int optionId;
+        optionId = option.nextInt();
+        switch (optionId){
+            case 1:
+                while(readingFile) {
+                    System.out.println("Reading the file........");
+                }
+                readFromTheFile();
+                printUnitName();
+                mainMenu();
+                break;
+            case 2:
+                calculateTotalAssignmentMarks();
+                printTotalMarks();
+                mainMenu();
+                break;
+            case 3:
+                printsStudentsWithMarksLessThanThreshold();
+                mainMenu();
+                break;
+            case 4:
+                sortStudentsTotalMarks();
+                printTop05StudentsWithLowestTotal();
+                mainMenu();
+                break;
+            case 5:
+                sortStudentsTotalMarks();
+                printTop05StudentsWithHighestTotal();
+                mainMenu();
+                break;
+
+            case 0:
+                break;
+        }
+
+
     }
 
     public void readFromTheFile() {
+        readingFile = true;
         int lineNumber = 0;
         try {
             readScanner = new Scanner(studentGradeCsv);
@@ -66,13 +108,14 @@ public class StudentMarks
             System.out.println("There is  an error in reading file.");
             e.printStackTrace();
         }
+        readingFile = false;
     }
 
     /**
      * The getAssignmentName method will receive the name of the assignment as an input
      *
      */
-    public void getUnitName() {
+    public void printUnitName() {
         System.out.println("\n" + unitName + "\n");
     }
 
@@ -87,6 +130,7 @@ public class StudentMarks
                 sum = Double.parseDouble(studentDetails.getMark01()) + Double.parseDouble(studentDetails.getMark02()) + Double.parseDouble(studentDetails.getMark03());
                 studentDetails.setTotalMarks(sum);
             }
+
         }
     }
 
@@ -95,7 +139,7 @@ public class StudentMarks
      *
      */
     public void printTotalMarks() {
-        System.out.println("-------------------------Total mark of the students ---------------------");
+        System.out.println("-------------------------Total mark of the students ---------------------\n");
         for (int i=0; i<studentDetailsArray.size(); i++) {
             System.out.println(studentDetailsArray.get(i).getTotalMarks() + " - " + studentDetailsArray.get(i).getFirstName() + " " + studentDetailsArray.get(i).getLastName() + " bearing student id of  " + studentDetailsArray.get(i).getStudentId());
         }
@@ -123,6 +167,7 @@ public class StudentMarks
      *
      */
     public void printsStudentsWithMarksLessThanThreshold() {
+        getThresholdValue();
         System.out.println("\n--------------- Students with total mark less than threshold value of " + threshold + "---------------");
         for (int i=0; i<studentDetailsArray.size(); i++) {
             if (studentDetailsArray.get(i).getTotalMarks() < threshold) {
