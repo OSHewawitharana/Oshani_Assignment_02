@@ -14,17 +14,30 @@ import java.io.IOException;
 public class StudentMarks
 {
     // instance variables
-    File studentGradeCsv = new File("prog5001_students_grade_2022.csv");
-    Scanner readScanner;
-    String unitName;
-    String headings;
-    String[] lineArray;
+    private static File studentGradeCsv = new File("prog5001_students_grade_2022.csv");
+    private static Scanner readScanner;
+    private static String unitName;
+    private static String headings;
+    private static String[] lineArray;
     Double threshold;
-    String fileName;
-    private List<StudentDetails> studentDetailsArray = new ArrayList<>();
+    static String fileName;
+    private static List<StudentDetails> studentDetailsArray = new ArrayList<>();
 
     
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        if (fileName == null || fileName.isEmpty()) {
+            System.out.println("Enter the file name: ");
+            fileName = scanner.nextLine();
+        }
+    
+        if (!fileName.equals("prog5001_students_grade_2022")) {
+            System.out.println("#######Error!######");
+            System.out.println("The file name you have entered is not exists. Reenter the file name.\n");
+            fileName = "";
+        }
+    
+        readFromTheFile();
         StudentMarks studentMarks = new StudentMarks();
         studentMarks.mainMenu();
     }
@@ -45,27 +58,9 @@ public class StudentMarks
         Scanner scanner = new Scanner(System.in);
     
         while (true) { // Loop until the user chooses to exit
-            if (fileName == null || fileName.isEmpty()) {
-                System.out.println("Enter the file name: ");
-                fileName = scanner.nextLine();
-            }
-    
-            if (!fileName.equals("prog5001_students_grade_2022")) {
-                System.out.println("#######Error!######");
-                System.out.println("The file name you have entered is not exists. Reenter the file name.\n");
-                fileName = "";
-                continue; // Continue to the next iteration of the loop
-            }
-    
-            readFromTheFile();
     
             try {
-                System.out.println("\n------------------------Select from the menu---------------------\n");
-                System.out.println("1. Enter 1 to calculate and display total marks of the students assignments");
-                System.out.println("2. Enter 2 to display the list of students with the total marks less than a threshold which can be given by you.");
-                System.out.println("3. Enter 3 to display top 05 students with the lowest total marks");
-                System.out.println("4. Enter 4 to display top 05 students with the highest total marks");
-                System.out.println("5. Enter 0 to exit the menu");
+                displayMenu();
     
                 int optionId = scanner.nextInt();
                 
@@ -85,6 +80,19 @@ public class StudentMarks
         }
     }
 
+    /**
+     * The displayMenu method will display the menu options to view information
+     * 
+     */
+    private void displayMenu() {
+        System.out.println("\n------------------------Select from the menu---------------------");
+        System.out.println("1. Enter 1 to calculate and display total marks of the students assignments");
+        System.out.println("2. Enter 2 to display the list of students with total marks less than a threshold");
+        System.out.println("3. Enter 3 to display the top 05 students with the lowest total marks");
+        System.out.println("4. Enter 4 to display the top 05 students with the highest total marks");
+        System.out.println("5. Enter 0 to exit the menu");
+    }
+    
     /**
      * The runSelectedOption method will display the output according to the user request
      * 
@@ -117,7 +125,7 @@ public class StudentMarks
      * 
      * 
      */
-    public void readFromTheFile() {
+    public static void readFromTheFile() {
         int lineNumber = 0;
         try {
             readScanner = new Scanner(studentGradeCsv);
@@ -210,6 +218,7 @@ public class StudentMarks
         getThresholdValue();
         System.out.println("\n--------------- Students with total mark less than threshold value of " + threshold + "---------------\n");
         System.out.println(headings + ", Total Mark \n" );
+        System.out.println(studentDetailsArray.size());
         for (int i=0; i<studentDetailsArray.size(); i++) {
             if (studentDetailsArray.get(i).getTotalMarks() < threshold ) {
                 System.out.println(studentDetailsArray.get(i).getLastName()+","+studentDetailsArray.get(i).getFirstName() +","+
