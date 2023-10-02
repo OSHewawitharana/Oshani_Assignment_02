@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Simple program to compute statistics of 'students' marks in an assignment.
+ * This program has written to read data of a given file which includes data about students' assignment marks.
+ * Also, this will calculate the total assignment marks for the unit and give information about the total marks like
+ * students with highest total mark, students with lowest total mark and student with a total mark of given threshold value.
  *
  * @author (Oshani Hewawitharana)
  * @version (Version 02.0 10/02/2023)
@@ -28,24 +30,25 @@ public class StudentMarks
         Scanner scanner = new Scanner(System.in);
         if (fileName == null || fileName.isEmpty()) {
             System.out.println("Enter the file name: ");
-            fileName = scanner.nextLine();
+            fileName = scanner.nextLine(); // Take the file name as an user input
         }
     
-        if (!fileName.equals("prog5001_students_grade_2022")) {
+        if (!fileName.equals("prog5001_students_grade_2022")) { // Check whether the file name entered by user matched with the file name stored 
             System.out.println("#######Error!######");
             System.out.println("The file name you have entered is not exists. Reenter the file name.\n");
             fileName = "";
         }
     
-        readFromTheFile();
+        readFromTheFile(); // Read the file 
+        
         StudentMarks studentMarks = new StudentMarks();
         studentMarks.mainMenu();
     }
 
     /**
      * Default constructor for objects of class StudentMarks
-     *
      * When it creates an object with this constructor, it executes methods call in this constructor
+     * 
      */
     public StudentMarks() {}
 
@@ -85,7 +88,7 @@ public class StudentMarks
      * 
      */
     private void displayMenu() {
-        System.out.println("\n------------------------Select from the menu---------------------");
+        System.out.println("\n------------------------Select from the menu---------------------\\n");
         System.out.println("1. Enter 1 to calculate and display total marks of the students assignments");
         System.out.println("2. Enter 2 to display the list of students with total marks less than a threshold");
         System.out.println("3. Enter 3 to display the top 05 students with the lowest total marks");
@@ -121,8 +124,8 @@ public class StudentMarks
     }
 
     /**
-     * The readFromTheFile method will read the data in the file
-     * 
+     * The readFromTheFile method will read the data in the file and identify the information like unit name and the heading for the rest of the data
+     * Create an array with the student details mentioned in the file
      * 
      */
     public static void readFromTheFile() {
@@ -168,7 +171,6 @@ public class StudentMarks
             e.printStackTrace();
         }
     }
-
 
     /**
      * The printHighest method will show the total marks of each students
@@ -217,8 +219,7 @@ public class StudentMarks
     public void printsStudentsWithMarksLessThanThreshold() {
         getThresholdValue();
         System.out.println("\n--------------- Students with total mark less than threshold value of " + threshold + "---------------\n");
-        System.out.println(headings + ", Total Mark \n" );
-        System.out.println(studentDetailsArray.size());
+        System.out.println(headings + ", Total Mark \n" ); // Print the heading included in the file with Total Mark as another heading
         for (int i=0; i<studentDetailsArray.size(); i++) {
             if (studentDetailsArray.get(i).getTotalMarks() < threshold ) {
                 System.out.println(studentDetailsArray.get(i).getLastName()+","+studentDetailsArray.get(i).getFirstName() +","+
@@ -274,7 +275,7 @@ public class StudentMarks
     public void printTop05StudentsWithLowestTotal() {
         sortStudentsTotalMarks(); // Sort the student details array
         System.out.println("-------------Top 05 students with lowest total mark -------------------------\n");
-        System.out.println(headings + ", Total Mark \n" );
+        System.out.println(headings + ", Total Mark \n" ); // Print the heading included in the file with Total Mark as another heading
         
         for (int i = 0; i<5; i++) {
            System.out.println(studentDetailsArray.get(i).getLastName()+","+studentDetailsArray.get(i).getFirstName() +","+
